@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>قصر المشويات | قائمة الطعام</title>
+  <!-- Google Fonts for Arabic elegant typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #1e1c1a 0%, #2c2416 100%);
+      font-family: 'Tajawal', 'Cairo', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1.5rem 1rem;
+      margin: 0;
+      position: relative;
+    }
+
+    /* Decorative smoke/grill texture */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(circle at 20% 30%, rgba(255, 140, 0, 0.08) 0%, transparent 35%),
+                        radial-gradient(circle at 80% 70%, rgba(210, 105, 30, 0.1) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .menu-container {
+      max-width: 850px;
+      width: 100%;
+      background: rgba(20, 16, 11, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 2px solid rgba(212, 143, 45, 0.45);
+      border-radius: 3.5rem 3.5rem 3rem 3rem;
+      box-shadow: 0 30px 55px rgba(0, 0, 0, 0.7), inset 0 0 35px rgba(255, 180, 40, 0.25);
+      padding: 2.5rem 2rem 2.8rem;
+      position: relative;
+      z-index: 2;
+      color: #f7e5c2;
+      transition: all 0.3s ease;
+    }
+
+    /* Grill marks decorative top */
+    .grill-stripes {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-bottom: 0.8rem;
+      opacity: 0.8;
+    }
+    .grill-stripes span {
+      height: 4px;
+      width: 65px;
+      background: linear-gradient(90deg, #b87333, #e6a345, #b87333);
+      border-radius: 6px;
+      box-shadow: 0 0 12px #f90;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+    }
+
+    .restaurant-name {
+      font-family: 'Cairo', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: #f7b23b;
+      text-shadow: 0 0 18px #ff7b1c, 0 4px 10px #00000060;
+      letter-spacing: 2px;
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .restaurant-name i {
+      font-size: 2.5rem;
+      color: #e07c2c;
+      filter: drop-shadow(0 0 10px #ff7b00);
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #ddb582;
+      background: rgba(0,0,0,0.4);
+      display: inline-block;
+      padding: 0.4rem 2rem;
+      border-radius: 3rem;
+      letter-spacing: 1px;
+      margin-top: 0.2rem;
+      border: 1px dashed #cf9043;
+      backdrop-filter: blur(5px);
+    }
+
+    .menu-section {
+      margin-bottom: 2.2rem;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffb457;
+      background: linear-gradient(to left, transparent, #3a2e1e, transparent);
+      padding: 0.6rem 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #b5752b;
+      border-top: 2px solid #b5752b;
+      letter-spacing: 1px;
+    }
+    .section-title i {
+      color: #f2851c;
+      font-size: 1.9rem;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.3rem;
+    }
+
+    .menu-item {
+      background: rgba(45, 34, 20, 0.7);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(230, 166, 60, 0.45);
+      border-radius: 1.8rem;
+      padding: 1.2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.5);
+    }
+    .menu-item:hover {
+      transform: translateY(-5px);
+      border-color: #fdad3f;
+      background: rgba(60, 45, 25, 0.8);
+      box-shadow: 0 15px 25px rgba(255, 140, 0, 0.35);
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-weight: 700;
+      font-size: 1.35rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .item-name {
+      color: #ffd78b;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .item-name i {
+      font-size: 1.1rem;
+      color: #f19132;
+    }
+    .price {
+      background: #241b0e;
+      color: #f7bb5c;
+      padding: 0.15rem 0.9rem;
+      border-radius: 2rem;
+      font-size: 1.2rem;
+      font-weight: 800;
+      border: 1px solid #d18f2c;
+      white-space: nowrap;
+    }
+
+    .item-desc {
+      font-size: 0.95rem;
+      color: #ccb692;
+      margin-top: 0.2rem;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    .badge {
+      background: #b44b1c;
+      color: #ffefc8;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.7rem;
+      border-radius: 20px;
+      margin-right: 0.3rem;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1rem;
+      color: #c9a86b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      border-top: 1px dashed #b68b40;
+      padding-top: 1.5rem;
+    }
+    .footer-note i {
+      color: #ff8c42;
+    }
+
+    .qr-hint {
+      background: #1f180e;
+      border-radius: 2.5rem;
+      padding: 0.5rem 1.7rem;
+      font-size: 0.9rem;
+      margin-top: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid #d18f2c;
+    }
+
+    @media (max-width: 550px) {
+      .menu-container {
+        padding: 1.8rem 1.2rem;
+        border-radius: 2.5rem;
+      }
+      .restaurant-name {
+        font-size: 2.5rem;
+      }
+      .section-title {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="menu-container">
+    <div class="grill-stripes">
+      <span></span><span></span><span></span>
+    </div>
+    
+    <div class="header">
+      <h1 class="restaurant-name">
+        <i class="fas fa-fire"></i> قصر المشويات <i class="fas fa-fire"></i>
+      </h1>
+      <div class="subtitle">
+        <i class="fas fa-utensils"></i> الذ طعم منذ ١٩٩٨ <i class="fas fa-utensils"></i>
+      </div>
+    </div>
+
+    <!-- المشاوي الرئيسية -->
+    <div class="menu-section">
+      <div class="section-title">
+        <i class="fas fa-drumstick-bite"></i> أسياخ المشاوي <i class="fas fa-drumstick-bite"></i>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-fire"></i> كباب لحم</span>
+            <span class="price">٦٥ ج.م</span>
+          </div>
+          <div class="item-desc">قطع لحم بقري متبلة بخلطة البيت، مشوية على الفحم</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-fire"></i> شيش طاووق</span>
+            <span class="price">٥٥ ج.م</span>
+          </div>
+          <div class="item-desc">فيليه دجاج طري مع بهارات خاصة وليمون</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-fire"></i> كفتة مشوية</span>
+            <span class="price">٦٠ ج.م</span>
+          </div>
+          <div class="item-desc">كفتة بلدي مخلوطة بالبقدونس والبصل</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-fire"></i> ريش ضاني</span>
+            <span class="price">١٢٠ ج.م</span>
+          </div>
+          <div class="item-desc"><span class="badge">أعلي مبيعاً</span> ريش طازجة متبلة بالأعشاب</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- أطباق الفرن و مشاوي إضافية -->
+    <div class="menu-section">
+      <div class="section-title">
+        <i class="fas fa-leaf"></i> أطباق الفرن <i class="fas fa-leaf"></i>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-chess-rook"></i> دجاج مشوي</span>
+            <span class="price">٨٥ ج.م</span>
+          </div>
+          <div class="item-desc">نصف دجاجة متبلة بخلطة سرية، تقدم مع أرز</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-chess-rook"></i> حمام مشوي</span>
+            <span class="price">٩٥ ج.م</span>
+          </div>
+          <div class="item-desc">حمام بلدي محشي فريك أو أرز، مشوي للكمال</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-fish"></i> فيليه سمك</span>
+            <span class="price">٩٠ ج.م</span>
+          </div>
+          <div class="item-desc">شرائح سمك فيليه متبلة بليمون وكمون</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-pepper-hot"></i> مشكل مشاوي</span>
+            <span class="price">١٤٠ ج.م</span>
+          </div>
+          <div class="item-desc">طبق يجمع كباب، كفتة، شيش طاووق وريش</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- المقبلات والسلطات -->
+    <div class="menu-section">
+      <div class="section-title">
+        <i class="fas fa-seedling"></i> مقبلات وسلطات <i class="fas fa-seedling"></i>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-bread-slice"></i> سلطة زبادي</span>
+            <span class="price">٢٠ ج.م</span>
+          </div>
+          <div class="item-desc">زبادي بلدي مع خيار ونعناع</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-carrot"></i> بابا غنوج</span>
+            <span class="price">٢٢ ج.م</span>
+          </div>
+          <div class="item-desc">باذنجان مشوي مع طحينة ورمان</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-pepper-hot"></i> سلطة مشكلة</span>
+            <span class="price">١٨ ج.م</span>
+          </div>
+          <div class="item-desc">طماطم، خيار، فلفل ألوان بزيت زيتون</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-cheese"></i> جبنة مشوية</span>
+            <span class="price">٣٠ ج.م</span>
+          </div>
+          <div class="item-desc">جبنة حلوم أو عكاوي مشوية على الفحم</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- المشروبات -->
+    <div class="menu-section">
+      <div class="section-title">
+        <i class="fas fa-mug-hot"></i> مشروبات <i class="fas fa-mug-hot"></i>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-wine-bottle"></i> عصير ليمون</span>
+            <span class="price">١٥ ج.م</span>
+          </div>
+          <div class="item-desc">ليمون طازج مثلج</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-coffee"></i> شاي بنعناع</span>
+            <span class="price">١٢ ج.م</span>
+          </div>
+          <div class="item-desc">شاي أسود مع نعناع بلدي</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-glass-whiskey"></i> كركديه</span>
+            <span class="price">١٤ ج.م</span>
+          </div>
+          <div class="item-desc">كركديه بارد أو ساخن</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <span class="item-name"><i class="fas fa-cocktail"></i> سموثي مانجو</span>
+            <span class="price">٢٥ ج.م</span>
+          </div>
+          <div class="item-desc">مانجو طازج مع حليب مثلج</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <i class="fas fa-phone-alt"></i> للحجز: ٠١٢٣٤٥٦٧٨٩ 
+      <span style="margin:0 0.5rem;">|</span>
+      <i class="fas fa-map-marker-alt"></i> شارع المشاوي، القاهرة
+      <div class="qr-hint">
+        <i class="fas fa-qrcode"></i> امسح الكود للطلب السريع
+      </div>
+    </div>
+  </div>
+
+  <!-- ملاحظة: هذا التصميم جاهز للرفع المجاني ويمكن تحويله إلى QR -->
+</body>
+</html>
